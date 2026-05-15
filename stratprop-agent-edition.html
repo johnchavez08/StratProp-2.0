@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StratProp - Professional Property Analysis for Real Estate Agents</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;900&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary-navy: #1e3a3a;
+  --primary-dark: #1a1410;
+  --secondary-dark: #2d2420;
+  --accent-gold: #d4a574;
+  --accent-gold-light: #e8c5a0;
+  --accent-gold-dark: #b8935e;
+  --cream: #f5f1ed;
+  --cream-light: #faf8f5;
+  --text-dark: #3e3935;
+  --text-light: #6b6560;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Lora', serif;
+  background: linear-gradient(135deg, var(--cream-light) 0%, var(--cream) 100%);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+.app-container { display: flex; flex-direction: column; min-height: 100vh; }
+.header {
+  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-dark) 100%);
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--accent-gold);
+  box-shadow: 0 4px 12px rgba(26, 20, 16, 0.2);
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cream);
+}
+.logo span { color: var(--accent-gold); }
+.header-subtitle {
+  font-size: 11px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.header-buttons { display: flex; gap: 12px; }
+.btn-header {
+  padding: 10px 18px;
+  border: 2px solid var(--accent-gold);
+  background: transparent;
+  color: var(--accent-gold);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: 'Lora', serif;
+  transition: all 0.3s;
+}
+.btn-header:hover {
+  background: var(--accent-gold);
+  color: var(--primary-navy);
+}
+.btn-header.primary {
+  background: var(--accent-gold);
+  color: var(--primary-navy);
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.section {
+  background: white;
+  border: 2px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-navy);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent-gold);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.form-control {
+  padding: 12px 14px;
+  border: 1px solid var(--accent-gold);
+  border-radius: 4px;
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  background: white;
+  color: var(--text-dark);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-gold-light);
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
+}
+
+.mls-upload-label {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+  color: var(--primary-navy);
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: 'Lora', serif;
+  transition: all 0.3s;
+}
+
+.mls-upload-label:hover {
+  background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
+  transform: translateY(-2px);
+}
+
+.mls-upload-label input { display: none; }
+
+.filter-section {
+  background: linear-gradient(135deg, var(--cream-light) 0%, #fbfaf7 100%);
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.filter-title {
+  font-weight: 600;
+  color: var(--primary-navy);
+  margin-bottom: 15px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.mls-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.filter-input {
+  padding: 10px 12px;
+  border: 1px solid var(--accent-gold);
+  border-radius: 4px;
+  font-family: 'Lora', serif;
+  font-size: 12px;
+  background: white;
+}
+
+.mls-results {
+  background: white;
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  max-height: 600px;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+.mls-item {
+  padding: 16px;
+  border-bottom: 1px solid #e8e3de;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mls-item:hover {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(74, 124, 124, 0.03) 100%);
+}
+
+.mls-item.selected {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.2) 0%, rgba(212, 165, 116, 0.1) 100%);
+  border-left: 4px solid var(--accent-gold);
+}
+
+.mls-item-left { flex: 1; }
+
+.mls-item-address {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--primary-navy);
+  margin-bottom: 6px;
+  font-family: 'Playfair Display', serif;
+}
+
+.mls-item-details {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.mls-item-right {
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.mls-item-price {
+  font-weight: 700;
+  color: var(--accent-gold-dark);
+  font-size: 14px;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 4px;
+}
+
+.analysis-section {
+  background: linear-gradient(135deg, var(--cream-light) 0%, #fbfaf7 100%);
+  border: 2px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.analysis-status {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.market-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-navy);
+}
+
+.stat-insight {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.comps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.comp-card {
+  background: white;
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 18px;
+  transition: all 0.3s;
+}
+
+.comp-card:hover {
+  box-shadow: 0 10px 30px rgba(212, 165, 116, 0.15);
+  transform: translateY(-2px);
+}
+
+.comp-address {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-navy);
+  margin-bottom: 12px;
+}
+
+.comp-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e8e3de;
+  font-size: 12px;
+}
+
+.comp-row:last-child { border-bottom: none; }
+
+.comp-label {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.comp-value {
+  color: var(--accent-gold-dark);
+  font-weight: 600;
+}
+
+.comp-price {
+  font-size: 16px;
+  font-family: 'Playfair Display', serif;
+  color: var(--accent-gold-dark);
+  font-weight: 700;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid var(--accent-gold);
+  text-align: right;
+}
+
+.pricing-recommendation {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(74, 124, 124, 0.08) 100%);
+  border: 2px solid var(--accent-gold);
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.pricing-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-navy);
+  margin-bottom: 16px;
+}
+
+.pricing-range {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.price-point {
+  text-align: center;
+}
+
+.price-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.price-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-gold-dark);
+}
+
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.btn-export {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+  color: var(--primary-navy);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: 'Lora', serif;
+  transition: all 0.3s;
+}
+
+.btn-export:hover {
+  background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
+  transform: translateY(-2px);
+}
+
+.btn-export:disabled {
+  background: #c0c0c0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 20, 16, 0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal.active { display: flex; }
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 30px 60px rgba(26, 20, 16, 0.3);
+  border: 2px solid var(--accent-gold);
+}
+
+.modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--primary-navy);
+}
+
+.modal-content p {
+  color: var(--text-light);
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--accent-gold);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-family: 'Lora', serif;
+}
+
+.modal-buttons .confirm {
+  background: var(--accent-gold);
+  color: var(--primary-navy);
+}
+
+.modal-buttons .cancel {
+  background: transparent;
+  color: var(--text-dark);
+}
+
+.toast {
+  display: none;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-dark) 100%);
+  color: var(--cream);
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2000;
+  border: 1px solid var(--accent-gold);
+}
+
+.toast.active { display: block; }
+
+@media (max-width: 768px) {
+  .header { flex-direction: column; padding: 16px 24px; gap: 12px; }
+  .main-content { padding: 20px 24px; }
+  .section { padding: 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .mls-filters { grid-template-columns: 1fr; }
+  .comps-grid { grid-template-columns: 1fr; }
+  .market-stats { grid-template-columns: 1fr; }
+}
+
+/* PRINT STYLES FOR REPORT */
+@media print {
+  body { background: white; }
+  .header, .filter-section, .export-buttons, .btn-header { display: none; }
+  .section { page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  .mls-item { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <div>
+      <div class="logo">StratProp<span>Agent</span></div>
+      <div class="header-subtitle">Professional Property Analysis for Real Estate Agents</div>
+    </div>
+    <div class="header-buttons">
+      <button class="btn-header" id="generateReportBtn" disabled>📄 Generate Report</button>
+      <button class="btn-header primary" id="clearBtn">Clear All</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- PROPERTY SELECTION SECTION -->
+    <div class="section">
+      <div class="section-title">📋 Select Property</div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Upload MLS Data (CSV)</label>
+          <label class="mls-upload-label">
+            📤 Choose File
+            <input type="file" id="mlsFile" accept=".csv" onchange="handleMlsUpload()" />
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-end; color: var(--text-light); font-size: 12px;">
+          <span id="loadedCount">0 properties loaded</span>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">🔍 Filter Properties</div>
+        <div class="mls-filters">
+          <input type="text" id="addressSearch" class="filter-input" placeholder="Search address or ZIP..." onkeyup="filterMLS()">
+          <select id="typeFilter" class="filter-input" onchange="filterMLS()">
+            <option value="">All Types</option>
+            <option value="Single Family">Single Family</option>
+            <option value="Condo">Condo</option>
+            <option value="Townhouse">Townhouse</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Land">Land</option>
+            <option value="Commercial">Commercial</option>
+          </select>
+          <input type="number" id="bedsMin" class="filter-input" placeholder="Min Beds" onchange="filterMLS()">
+          <input type="number" id="bathsMin" class="filter-input" placeholder="Min Baths" onchange="filterMLS()">
+          <input type="number" id="priceMin" class="filter-input" placeholder="Min $" onchange="filterMLS()">
+          <input type="number" id="priceMax" class="filter-input" placeholder="Max $" onchange="filterMLS()">
+        </div>
+      </div>
+
+      <div class="mls-results" id="mlsResults">
+        <div class="analysis-status">Upload an MLS CSV file to get started</div>
+      </div>
+    </div>
+
+    <!-- ANALYSIS SECTION -->
+    <div class="analysis-section" id="analysisSection" style="display: none;">
+      <div class="section-title">📊 Market Analysis</div>
+      
+      <div class="market-stats" id="marketStats"></div>
+
+      <div>
+        <h3 style="font-weight: 600; color: var(--primary-navy); margin-bottom: 16px; font-size: 14px;">Comparable Sales</h3>
+        <div class="comps-grid" id="compsGrid"></div>
+      </div>
+
+      <div class="pricing-recommendation">
+        <div class="pricing-title">💰 Recommended Pricing Strategy</div>
+        <div class="pricing-range" id="pricingRange"></div>
+      </div>
+    </div>
+
+    <!-- EXPORT SECTION -->
+    <div class="export-buttons" id="exportSection" style="display: none;">
+      <button class="btn-export" id="pdfExportBtn">📄 Export as Professional PDF</button>
+      <button class="btn-export" id="htmlExportBtn">🌐 Export as HTML (Client Email)</button>
+      <button class="btn-export" id="textExportBtn">📝 Export as Text</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resetModal">
+  <div class="modal-content">
+    <h2>Clear All Data?</h2>
+    <p>This will clear the selected property and all analysis. This action cannot be undone.</p>
+    <div class="modal-buttons">
+      <button class="cancel" onclick="closeResetModal()">Cancel</button>
+      <button class="confirm" onclick="confirmReset()">Clear All</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- HIDDEN REPORT TEMPLATE -->
+<div id="reportTemplate" style="display: none;">
+  <div style="page-break-after: always;">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1e3a3a; margin-bottom: 8px;" id="reportAddress"></h1>
+    <p style="color: #6b6560; font-size: 14px; margin-bottom: 24px;" id="reportDate"></p>
+    
+    <div style="background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(74, 124, 124, 0.08) 100%); padding: 24px; border-radius: 8px; margin-bottom: 32px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1e3a3a; margin-bottom: 16px;">Executive Summary</h2>
+      <div id="executiveSummary" style="font-size: 13px; line-height: 1.8; color: #3e3935;"></div>
+    </div>
+
+    <div style="margin-bottom: 32px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1e3a3a; margin-bottom: 16px;">Property Details</h2>
+      <div id="propertyDetails" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 13px;"></div>
+    </div>
+
+    <div style="margin-bottom: 32px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1e3a3a; margin-bottom: 16px;">Market Comparison</h2>
+      <div id="marketComparison" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; font-size: 13px;"></div>
+    </div>
+
+    <div style="margin-bottom: 32px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1e3a3a; margin-bottom: 16px;">Recent Comparable Sales</h2>
+      <div id="compsTable" style="width: 100%; font-size: 12px;"></div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(212, 165, 116, 0.08) 100%); padding: 24px; border-radius: 8px; margin-top: 32px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 20px; color: #1e3a3a; margin-bottom: 16px;">Recommended Pricing</h2>
+      <div id="pricingStrategy" style="font-size: 13px; line-height: 1.8;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let mlsData = [];
+let selectedProperty = null;
+
+function handleMlsUpload() {
+  const file = document.getElementById('mlsFile').files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    try {
+      const lines = event.target.result.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim());
+      
+      mlsData = [];
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const values = lines[i].split(',').map(v => v.trim());
+        const obj = {};
+        headers.forEach((h, idx) => obj[h] = values[idx] || '');
+        mlsData.push(obj);
+      }
+      
+      document.getElementById('loadedCount').textContent = mlsData.length + ' properties loaded';
+      displayMLS();
+      showToast(`✅ Loaded ${mlsData.length} properties`, 'success');
+    } catch (error) {
+      showToast('Error parsing CSV', 'error');
+      console.error(error);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function displayMLS() {
+  const results = document.getElementById('mlsResults');
+  results.innerHTML = '';
+
+  if (mlsData.length === 0) {
+    results.innerHTML = '<div class="analysis-status">No properties loaded</div>';
+    return;
+  }
+
+  mlsData.forEach((prop, idx) => {
+    const item = document.createElement('div');
+    item.className = 'mls-item';
+    item.setAttribute('data-index', idx);
+    item.setAttribute('data-address', (prop.Address || '').toLowerCase());
+    item.setAttribute('data-type', (prop.PropertyType || '').toUpperCase());
+    item.setAttribute('data-beds', parseInt(prop.Beds) || 0);
+    item.setAttribute('data-baths', parseInt(prop.Baths) || 0);
+    item.setAttribute('data-price', parseInt((prop.Price || '0').replace(/[$,]/g, '')) || 0);
+
+    if (selectedProperty && selectedProperty['MLS#'] === prop['MLS#']) {
+      item.classList.add('selected');
+    }
+
+    item.onclick = () => selectProperty(prop, item);
+
+    const price = parseInt((prop.Price || '0').replace(/[$,]/g, '')) || 0;
+    const formatted = price > 0 ? '$' + price.toLocaleString() : 'N/A';
+
+    item.innerHTML = `
+      <div class="mls-item-left">
+        <div class="mls-item-address">${prop.Address || 'N/A'}</div>
+        <div class="mls-item-details">
+          <span>${prop.Beds || 'N/A'}bd</span>
+          <span>${prop.Baths || 'N/A'}ba</span>
+          <span>${prop.ZIP || 'N/A'}</span>
+        </div>
+      </div>
+      <div class="mls-item-right">
+        <div class="mls-item-price">${formatted}</div>
+      </div>
+    `;
+    results.appendChild(item);
+  });
+}
+
+function selectProperty(prop, element) {
+  selectedProperty = prop;
+  document.querySelectorAll('.mls-item').forEach(i => i.classList.remove('selected'));
+  element.classList.add('selected');
+  
+  generateAnalysis();
+  showToast(`✅ ${prop.Address} selected`, 'success');
+  document.getElementById('generateReportBtn').disabled = false;
+}
+
+function generateAnalysis() {
+  if (!selectedProperty) return;
+
+  const selectedZip = selectedProperty.ZIP;
+  const selectedType = selectedProperty.PropertyType;
+  
+  const comps = mlsData.filter(prop => 
+    prop.ZIP === selectedZip && 
+    prop.PropertyType === selectedType &&
+    prop['MLS#'] !== selectedProperty['MLS#']
+  ).slice(0, 6);
+
+  document.getElementById('analysisSection').style.display = 'block';
+  document.getElementById('exportSection').style.display = 'flex';
+
+  // Generate market stats
+  const selectedPrice = parseInt((selectedProperty.Price || '0').replace(/[$,]/g, '')) || 0;
+  const avgPrice = comps.length > 0 ? Math.floor(comps.reduce((sum, c) => sum + (parseInt((c.Price || '0').replace(/[$,]/g, '')) || 0), 0) / comps.length) : 0;
+  const avgDays = comps.length > 0 ? Math.floor(comps.reduce((sum, c) => sum + (parseInt(c.DaysOnMarket) || 0), 0) / comps.length) : 0;
+  const pricePercentDiff = avgPrice > 0 ? (((selectedPrice - avgPrice) / avgPrice) * 100).toFixed(1) : 0;
+
+  const marketStats = document.getElementById('marketStats');
+  marketStats.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Average Market Price</div>
+      <div class="stat-value">$${avgPrice.toLocaleString()}</div>
+      <div class="stat-insight">Based on ${comps.length} recent sales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Your Property</div>
+      <div class="stat-value">$${selectedPrice.toLocaleString()}</div>
+      <div class="stat-insight">${pricePercentDiff > 0 ? '+' : ''}${pricePercentDiff}% vs. market</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Days on Market</div>
+      <div class="stat-value">${avgDays} days</div>
+      <div class="stat-insight">Faster = higher demand</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Market Position</div>
+      <div class="stat-value">${pricePercentDiff > 5 ? 'Premium' : pricePercentDiff < -5 ? 'Value' : 'At Market'}</div>
+      <div class="stat-insight">Pricing strategy indicator</div>
+    </div>
+  `;
+
+  // Display comps
+  const compsGrid = document.getElementById('compsGrid');
+  compsGrid.innerHTML = '';
+  
+  if (comps.length === 0) {
+    compsGrid.innerHTML = '<div class="analysis-status">No comparable sales found</div>';
+  } else {
+    comps.forEach(comp => {
+      const compPrice = parseInt((comp.Price || '0').replace(/[$,]/g, '')) || 0;
+      const formattedPrice = compPrice > 0 ? '$' + compPrice.toLocaleString() : 'N/A';
+      
+      const card = document.createElement('div');
+      card.className = 'comp-card';
+      card.innerHTML = `
+        <div class="comp-address">${comp.Address}</div>
+        <div class="comp-row">
+          <span class="comp-label">Beds/Baths</span>
+          <span class="comp-value">${comp.Beds}/${comp.Baths}</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SqFt</span>
+          <span class="comp-value">${comp.SqFt || 'N/A'}</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Days on Market</span>
+          <span class="comp-value">${comp.DaysOnMarket || 'N/A'}</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Status</span>
+          <span class="comp-value">${comp.Status || 'N/A'}</span>
+        </div>
+        <div class="comp-price">${formattedPrice}</div>
+      `;
+      compsGrid.appendChild(card);
+    });
+  }
+
+  // Pricing recommendation
+  const recommendedMin = Math.floor(avgPrice * 0.97);
+  const recommendedMax = Math.floor(avgPrice * 1.05);
+  const recommendedOptimal = Math.floor((recommendedMin + recommendedMax) / 2);
+
+  document.getElementById('pricingRange').innerHTML = `
+    <div class="price-point">
+      <div class="price-label">Conservative</div>
+      <div class="price-amount">$${recommendedMin.toLocaleString()}</div>
+    </div>
+    <div class="price-point">
+      <div class="price-label">Recommended</div>
+      <div class="price-amount">$${recommendedOptimal.toLocaleString()}</div>
+    </div>
+    <div class="price-point">
+      <div class="price-label">Aggressive</div>
+      <div class="price-amount">$${recommendedMax.toLocaleString()}</div>
+    </div>
+  `;
+}
+
+function filterMLS() {
+  const search = document.getElementById('addressSearch').value.toLowerCase();
+  const type = document.getElementById('typeFilter').value.toUpperCase();
+  const bedsMin = parseInt(document.getElementById('bedsMin').value) || 0;
+  const bathsMin = parseInt(document.getElementById('bathsMin').value) || 0;
+  const priceMin = parseInt(document.getElementById('priceMin').value) || 0;
+  const priceMax = parseInt(document.getElementById('priceMax').value) || 999999999;
+
+  document.querySelectorAll('.mls-item').forEach(item => {
+    const address = item.getAttribute('data-address');
+    const propType = item.getAttribute('data-type');
+    const beds = parseInt(item.getAttribute('data-beds'));
+    const baths = parseInt(item.getAttribute('data-baths'));
+    const price = parseInt(item.getAttribute('data-price'));
+
+    let match = true;
+    if (search && !address.includes(search)) match = false;
+    if (type && !propType.includes(type)) match = false;
+    if (bedsMin > 0 && beds < bedsMin) match = false;
+    if (bathsMin > 0 && baths < bathsMin) match = false;
+    if (priceMin > 0 && price < priceMin) match = false;
+    if (price > priceMax) match = false;
+
+    item.style.display = match ? 'block' : 'none';
+  });
+}
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('resetModal').classList.add('active');
+});
+
+function closeResetModal() {
+  document.getElementById('resetModal').classList.remove('active');
+}
+
+function confirmReset() {
+  mlsData = [];
+  selectedProperty = null;
+  document.getElementById('mlsResults').innerHTML = '<div class="analysis-status">Upload an MLS CSV file to get started</div>';
+  document.getElementById('analysisSection').style.display = 'none';
+  document.getElementById('exportSection').style.display = 'none';
+  document.getElementById('mlsFile').value = '';
+  document.getElementById('loadedCount').textContent = '0 properties loaded';
+  document.getElementById('generateReportBtn').disabled = true;
+  closeResetModal();
+  showToast('All data cleared', 'success');
+}
+
+document.getElementById('generateReportBtn').addEventListener('click', () => {
+  if (!selectedProperty) {
+    showToast('Select a property first', 'error');
+    return;
+  }
+  generateProfessionalReport();
+});
+
+function generateProfessionalReport() {
+  const selectedZip = selectedProperty.ZIP;
+  const selectedType = selectedProperty.PropertyType;
+  const selectedPrice = parseInt((selectedProperty.Price || '0').replace(/[$,]/g, '')) || 0;
+  
+  const comps = mlsData.filter(prop => 
+    prop.ZIP === selectedZip && 
+    prop.PropertyType === selectedType &&
+    prop['MLS#'] !== selectedProperty['MLS#']
+  ).slice(0, 6);
+
+  const avgPrice = comps.length > 0 ? Math.floor(comps.reduce((sum, c) => sum + (parseInt((c.Price || '0').replace(/[$,]/g, '')) || 0), 0) / comps.length) : selectedPrice;
+  const avgDays = comps.length > 0 ? Math.floor(comps.reduce((sum, c) => sum + (parseInt(c.DaysOnMarket) || 0), 0) / comps.length) : 0;
+
+  const recommendedMin = Math.floor(avgPrice * 0.97);
+  const recommendedMax = Math.floor(avgPrice * 1.05);
+  const recommendedOptimal = Math.floor((recommendedMin + recommendedMax) / 2);
+
+  // Generate report content
+  let reportHTML = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Property Analysis Report - ${selectedProperty.Address}</title>
+      <style>
+        body { font-family: 'Lora', serif; margin: 0; padding: 40px; background: white; color: #3e3935; }
+        .header { border-bottom: 3px solid #d4a574; padding-bottom: 20px; margin-bottom: 40px; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 32px; color: #1e3a3a; margin: 0; }
+        .header p { margin: 4px 0; color: #6b6560; }
+        .section { margin-bottom: 40px; }
+        .section h2 { font-family: 'Playfair Display', serif; font-size: 20px; color: #1e3a3a; border-bottom: 2px solid #d4a574; padding-bottom: 12px; margin-bottom: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px; }
+        .stat { padding: 16px; background: #faf8f5; border: 1px solid #d4a574; border-radius: 4px; }
+        .stat-label { font-size: 11px; text-transform: uppercase; color: #6b6560; font-weight: 600; }
+        .stat-value { font-size: 24px; font-weight: 700; color: #1e3a3a; margin: 8px 0; }
+        .stat-insight { font-size: 11px; color: #6b6560; }
+        .comps-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .comps-table th { background: #1e3a3a; color: white; padding: 12px; text-align: left; font-size: 12px; }
+        .comps-table td { padding: 12px; border-bottom: 1px solid #e8e3de; font-size: 12px; }
+        .pricing-box { background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(212, 165, 116, 0.08) 100%); padding: 24px; border-radius: 8px; border: 2px solid #d4a574; }
+        .pricing-range { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+        .price-point { padding: 16px; }
+        .price-amount { font-size: 20px; font-weight: 700; color: #b8935e; }
+        .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #d4a574; font-size: 11px; color: #6b6560; }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <h1>${selectedProperty.Address}</h1>
+        <p>${selectedProperty.ZIP}</p>
+        <p>Report generated on ${new Date().toLocaleDateString()}</p>
+      </div>
+
+      <div class="section">
+        <h2>Executive Summary</h2>
+        <p>This professional market analysis provides a comprehensive overview of ${selectedProperty.Address}, including comparable sales, market positioning, and recommended pricing strategy. Based on ${comps.length} recent comparable sales in the ${selectedZip} ZIP code, this report guides pricing decisions to maximize market exposure and buyer interest.</p>
+      </div>
+
+      <div class="section">
+        <h2>Property Details</h2>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-label">Address</div>
+            <div class="stat-value" style="font-size: 14px;">${selectedProperty.Address}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Price</div>
+            <div class="stat-value">$${selectedPrice.toLocaleString()}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Beds / Baths</div>
+            <div class="stat-value">${selectedProperty.Beds} / ${selectedProperty.Baths}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Square Feet</div>
+            <div class="stat-value">${selectedProperty.SqFt || 'N/A'}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Year Built</div>
+            <div class="stat-value">${selectedProperty.YearBuilt || 'N/A'}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Days on Market</div>
+            <div class="stat-value">${selectedProperty.DaysOnMarket || 'N/A'}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Market Analysis</h2>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-label">Average Market Price</div>
+            <div class="stat-value">$${avgPrice.toLocaleString()}</div>
+            <div class="stat-insight">Based on ${comps.length} recent sales</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Price Per SqFt</div>
+            <div class="stat-value">$${Math.floor(selectedPrice / (parseInt(selectedProperty.SqFt) || 1))}</div>
+            <div class="stat-insight">Your property valuation</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Avg Days to Sell</div>
+            <div class="stat-value">${avgDays} days</div>
+            <div class="stat-insight">Market demand indicator</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Your Position</div>
+            <div class="stat-value">${selectedPrice > avgPrice ? 'Premium' : selectedPrice < avgPrice - (avgPrice * 0.05) ? 'Value' : 'At Market'}</div>
+            <div class="stat-insight">vs. comparable sales</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Comparable Sales</h2>
+        <table class="comps-table">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Beds/Baths</th>
+              <th>SqFt</th>
+              <th>Price</th>
+              <th>Days on Market</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${comps.map(comp => `
+              <tr>
+                <td>${comp.Address}</td>
+                <td>${comp.Beds}/${comp.Baths}</td>
+                <td>${comp.SqFt || 'N/A'}</td>
+                <td>$${parseInt((comp.Price || '0').replace(/[$,]/g, '')).toLocaleString()}</td>
+                <td>${comp.DaysOnMarket || 'N/A'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>Recommended Pricing Strategy</h2>
+        <div class="pricing-box">
+          <div class="pricing-range">
+            <div class="price-point">
+              <div class="stat-label">Conservative Price</div>
+              <div class="price-amount">$${recommendedMin.toLocaleString()}</div>
+              <p style="font-size: 11px; color: #6b6560; margin-top: 8px;">For quick sale in slower market</p>
+            </div>
+            <div class="price-point">
+              <div class="stat-label">Recommended Price</div>
+              <div class="price-amount" style="color: #27ae60;">$${recommendedOptimal.toLocaleString()}</div>
+              <p style="font-size: 11px; color: #6b6560; margin-top: 8px;">Optimal market positioning</p>
+            </div>
+            <div class="price-point">
+              <div class="stat-label">Aggressive Price</div>
+              <div class="price-amount">$${recommendedMax.toLocaleString()}</div>
+              <p style="font-size: 11px; color: #6b6560; margin-top: 8px;">If premium features justify</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p><strong>Report prepared by:</strong> StratPropAgent</p>
+        <p><strong>Disclaimer:</strong> This analysis is based on comparable sales data and market trends. Individual property features, condition, and local factors should be considered. Consult with a licensed real estate professional for final pricing decisions.</p>
+      </div>
+    </body>
+    </html>
+  `;
+
+  // Open in new window and allow printing
+  const reportWindow = window.open('', '_blank');
+  reportWindow.document.write(reportHTML);
+  reportWindow.document.close();
+  
+  showToast('📄 Professional report generated!', 'success');
+}
+
+document.getElementById('pdfExportBtn').addEventListener('click', () => {
+  generateProfessionalReport();
+});
+
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast active`;
+  setTimeout(() => toast.classList.remove('active'), 3000);
+}
+
+document.getElementById('resetModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('resetModal')) closeResetModal();
+});
+</script>
+
+</body>
+</html>
